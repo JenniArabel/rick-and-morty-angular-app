@@ -3,7 +3,16 @@ import { CharactersPageComponent } from './pages/characters-page/characters-page
 
 export const routes: Routes = [
   {
-    path:'characters',
-    component: CharactersPageComponent
-  }
+    path: 'characters',
+    component: CharactersPageComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'characters',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'characters',
+  },
 ];

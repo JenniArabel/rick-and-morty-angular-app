@@ -1,0 +1,35 @@
+<div
+  class="inline-flex items-center text-sm rounded-lg border border-[#0085FC] bg-[#222222]"
+>
+  <button
+    (click)="onPageChange(currentPage - 1)"
+    [disabled]="currentPage === 1"
+    class="text-[#666666] hover:text-white disabled:text-[#666666] disabled:cursor-not-allowed transition-colors px-6 py-2 border-r border-[#0085FC]"
+  >
+    Previous
+  </button>
+
+  <div class="flex border-r border-l border-[#0085FC]">
+    @for (page of pages; track page) {
+    <button
+      (click)="onPageChange(page)"
+      [class]="
+        page === currentPage
+          ? 'bg-[#0085FC] text-white'
+          : 'text-[#0085FC] hover:bg-[#0085FC]/20 hover:text-white'
+      "
+      class="w-12 h-10 flex items-center justify-center transition-colors border-r border-[#0085FC] last:border-r-0"
+    >
+      {{ page }}
+    </button>
+    }
+  </div>
+
+  <button
+    (click)="onPageChange(currentPage + 1)"
+    [disabled]="currentPage === 3"
+    class="text-[#0085FC] hover:text-white disabled:text-[#666666] disabled:cursor-not-allowed transition-colors px-6 py-2"
+  >
+    Next
+  </button>
+</div>
