@@ -10,7 +10,7 @@
     <div class="text-red-500 text-center">{{ error() }}</div>
     } @else {
     <div
-      class="grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 w-[95%] lg:w-[100%] mx-auto"
+      class="grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 w-[95%] lg:w-[80%] mx-auto"
     >
       @for (character of characters(); track character.id; let i = $index) {
       <character-card [character]="character" [isPriority]="i < 5" />
