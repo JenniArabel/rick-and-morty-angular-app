@@ -27,7 +27,9 @@
 
           <span>
             <span class="text-[#656D74]">Status: </span>
-            <span class="text-[#656D74]">{{ character.status }}</span>
+            <span class="text-[#656D74]">{{
+              character.status | statusTranslate
+            }}</span>
           </span>
 
           <span>
@@ -37,7 +39,9 @@
 
           <span>
             <span class="text-[#656D74]">Gender: </span>
-            <span class="text-[#656D74]">{{ character.gender }}</span>
+            <span class="text-[#656D74]">{{
+              character.gender | genderTranslate
+            }}</span>
           </span>
 
           <span>
@@ -57,5 +61,4 @@
       </div>
     </div>
   </div>
-
 </div>
