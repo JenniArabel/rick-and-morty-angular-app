@@ -27,9 +27,14 @@
 
           <span>
             <span class="text-[#656D74]">Status: </span>
-            <span class="text-[#656D74]">{{
-              character.status | statusTranslate
-            }}</span>
+            <span
+              [ngClass]="{
+                'text-green-500': character.status.toLowerCase() === 'alive',
+                'text-red-500': character.status.toLowerCase() === 'dead',
+                'text-yellow-500': character.status.toLowerCase() === 'unknown'
+              }"
+              >{{ character.status | statusTranslate }}</span
+            >
           </span>
 
           <span>
