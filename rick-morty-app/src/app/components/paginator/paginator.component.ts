@@ -12,8 +12,14 @@ export class PaginatorComponent {
   @Input() totalPages: number = 1;
   @Output() pageChange = new EventEmitter<number>();
 
-  get pages(): number[] {
-    return [1, 2, 3];
+  @Input() pages: number[] = [];
+
+  canGoBack(): boolean {
+    return this.currentPage > 1;
+  }
+
+  canGoForward(): boolean {
+    return this.currentPage < this.totalPages;
   }
 
   onPageChange(page: number): void {

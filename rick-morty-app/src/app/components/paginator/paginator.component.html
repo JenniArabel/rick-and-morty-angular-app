@@ -3,7 +3,7 @@
 >
   <button
     (click)="onPageChange(currentPage - 1)"
-    [disabled]="currentPage === 1"
+    [disabled]="!canGoBack()"
     class="text-[#666666] hover:text-white disabled:text-[#666666] disabled:cursor-not-allowed transition-colors px-6 py-2 border-r border-[#0085FC]"
   >
     Previous
@@ -27,7 +27,7 @@
 
   <button
     (click)="onPageChange(currentPage + 1)"
-    [disabled]="currentPage === 3"
+    [disabled]="!canGoForward()"
     class="text-[#0085FC] hover:text-white disabled:text-[#666666] disabled:cursor-not-allowed transition-colors px-6 py-2"
   >
     Next

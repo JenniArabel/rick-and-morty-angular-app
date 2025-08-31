@@ -22,6 +22,7 @@
       <app-paginator
         [currentPage]="page()"
         [totalPages]="totalPages()"
+        [pages]="pages()"
         (pageChange)="loadPage($event)"
       ></app-paginator>
     </div>

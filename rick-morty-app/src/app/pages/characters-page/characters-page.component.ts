@@ -29,8 +29,19 @@ export class CharactersPageComponent implements OnInit {
 
   pages = computed(() => {
     const currentPage = this.page();
-    // Siempre mostrar solo 3 páginas
-    return [1, 2, 3];
+    const lastPage = this.totalPages();
+
+    // Mostrar 3 páginas consecutivas centradas en la página actual
+    let start = currentPage - 1;
+
+    // Ajustar el inicio si estamos cerca del principio o final
+    if (start < 1) {
+      start = 1;
+    } else if (start > lastPage - 2) {
+      start = Math.max(1, lastPage - 2);
+    }
+
+    return [start, start + 1, start + 2].filter((page) => page <= lastPage);
   });
 
   ngOnInit(): void {
