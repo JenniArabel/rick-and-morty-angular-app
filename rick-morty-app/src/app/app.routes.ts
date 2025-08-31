@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { CharactersPageComponent } from './pages/characters-page/characters-page.component';
 import { CharacterDetailsComponent } from './pages/character-details/character-details.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -17,7 +18,11 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: '404',
+    component: NotFoundComponent
+  },
+  {
     path: '**',
-    redirectTo: 'characters',
+    redirectTo: '404',
   },
 ];
