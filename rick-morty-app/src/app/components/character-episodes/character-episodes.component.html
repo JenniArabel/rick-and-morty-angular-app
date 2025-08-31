@@ -1,0 +1,26 @@
+<!-- Episodes Container -->
+<div class="p-4 bg-[#222222] rounded-xl w-[700px]">
+  <div class="border border-[#4A4C54] rounded-lg overflow-hidden">
+    <!-- Header Section -->
+    <div class="px-4 py-1 border-b border-[#4A4C54]">
+      <h2 class="text-lg font-bold text-[#656D74]">
+        List of Episodes appearances
+      </h2>
+    </div>
+
+    <!-- Content Section -->
+    <div class="px-4 py-2">
+      <div
+        class="h-[350px] overflow-y-auto [&::-webkit-scrollbar]:w-0 hover:[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-[#4A4C54] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent pr-2"
+      >
+        <div class="flex flex-col gap-0.5">
+          @for (episode of episodes(); track episode.id) {
+          <div class="text-[#086EC8] hover:text-[#0A84F4] text-sm">
+            {{ formatEpisodeCode(episode.episode) }}: {{ episode.name }}
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

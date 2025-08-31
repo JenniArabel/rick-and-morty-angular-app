@@ -1,5 +1,6 @@
 <article
   class="group relative overflow-hidden bg-[#2A2C34] hover:bg-[#3C3E44] cursor-pointer transition-colors rounded-lg h-[180px] flex flex-col"
+  [routerLink]="['/characters', character.id]"
 >
   <img
     [ngSrc]="character.image"

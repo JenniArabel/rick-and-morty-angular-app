@@ -1,0 +1,25 @@
+<!-- Main es el contenedor principal que ocupa al menos toda la altura de la pantalla -->
+<main class="min-h-screen bg-[#333333] text-white">
+  <!-- Container principal con padding y centrado -->
+  <div class="container mx-auto p-8">
+    <!-- Control de flujo usando la nueva sintaxis de Angular 17 (@if) -->
+    @if (character()) {
+    <!-- Navegación que muestre la ruta para llegar a ese personaje -->
+    <nav class="text-sm mb-6">
+      <a routerLink="/characters" class="text-blue-400 hover:text-blue-300">
+        Characters
+      </a>
+
+      <span class="mx-2 text-gray-500">/</span>
+
+      <span class="text-gray-400">{{ character()!.name }}</span>
+    </nav>
+
+    <!-- Container flex para centrar y organizar los componentes -->
+    <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+      <character-info [character]="character()!"></character-info>
+      <character-episodes [episodeUrls]="character()!.episode || []"></character-episodes>
+    </div>
+    }
+  </div>
+</main>
