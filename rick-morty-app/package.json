@@ -2,8 +2,7 @@
   "name": "rick-morty-app",
   "version": "0.0.0",
   "engines": {
-    "node": "18.17.1",
-    "npm": "9.6.7"
+    "node": "22.19.0"
   },
   "scripts": {
     "ng": "ng",
