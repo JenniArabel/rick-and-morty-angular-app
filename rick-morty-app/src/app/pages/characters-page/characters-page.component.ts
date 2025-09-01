@@ -1,7 +1,7 @@
 /**
- * Characters Page Component
- * Displays a paginated grid of Rick and Morty characters.
- * Manages character loading, pagination, and error states.
+ * Characters Page Component - Páginal principal
+ * Muestra los personajes de Rick y Morty. 10 por página (2 x 5).
+ * Maneja la carga de los personajes, la paginación y los estados de error.
  */
 import { CharactersService } from '../../services/characters.service';
 import { Character } from './../../interfaces/ApiResponse';
@@ -17,33 +17,48 @@ import { PaginatorComponent } from '../../components/paginator/paginator.compone
   templateUrl: './characters-page.component.html',
 })
 export class CharactersPageComponent implements OnInit {
-  // Inject the character service for API calls
+  // Implementamos OnInit para cargar los datos automáticamente cuando el componente se inicializa.
+
+  // Injectamos el servicio de personajes para llamadas a la API
   private characterService = inject(CharactersService);
 
-  // State management using signals
-  characters = signal<Character[]>([]); // List of characters to display
-  page = signal<number>(1); // Current page number
-  totalPages = signal<number>(0); // Total number of pages available
-  loading = signal<boolean>(false); // Loading state indicator
-  error = signal<string | null>(null); // Error message if any
+  // Manejo de estado usando signals
+  characters = signal<Character[]>([]); // Lista de personajes a mostrar
+  page = signal<number>(1); // Número de página actual
+  totalPages = signal<number>(0); // Número total de páginas disponibles
+  loading = signal<boolean>(false); // Indicador de estado de carga
+  error = signal<string | null>(null); // Mensaje de error si lo hay
 
+  /* Páginas a mostrar en el paginador
+    Usamos computed para calcular dinámicamente la paginación,
+    mostrando 3 páginas consecutivas centradas en la actual.
+  */
   pages = computed(() => {
+    // Página actual en la que el usuario se encuentra
     const currentPage = this.page();
     const lastPage = this.totalPages();
 
     // Mostrar 3 páginas consecutivas centradas en la página actual
+    // Página inicial para el paginador
     let start = currentPage - 1;
 
     // Ajustar el inicio si estamos cerca del principio o final
+    // Si estamos en la primera página (0 por eso es < 1), mostrar páginas 1, 2 y 3
     if (start < 1) {
       start = 1;
     } else if (start > lastPage - 2) {
       start = Math.max(1, lastPage - 2);
+      /*Esta condición maneja el caso cuando estamos cerca del final
+      Usamos Math.max para asegurarnos de que no sea menor
+      que 1,
+      y para que start sea 2 números menos que el número de la última página.
+      */
     }
 
     return [start, start + 1, start + 2].filter((page) => page <= lastPage);
   });
 
+  // Cargamos la primera página al inicializar el componente
   ngOnInit(): void {
     this.loadPage(this.page());
   }
@@ -54,10 +69,13 @@ export class CharactersPageComponent implements OnInit {
    */
   loadPage(pageNumber: number) {
     if (pageNumber < 1) return;
+    // Si el número de página es menor que 1
+    // Entonces return termina la ejecución de la función inmediatamente
 
-    this.loading.set(true);
-    this.error.set(null);
+    this.loading.set(true); // Indicamos que estamos cargando datos
+    this.error.set(null); // Limpiamos cualquier mensaje de error previo
 
+    // Realizamos la llamada al servicio para obtener los personajes
     this.characterService.getCharacters(pageNumber).subscribe({
       next: (res) => {
         // Limitamos a mostrar solo los primeros 10 personajes
