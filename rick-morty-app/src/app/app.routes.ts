@@ -5,6 +5,10 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.routes'),
+  },
+  {
     path: 'characters',
     component: CharactersPageComponent,
   },
@@ -12,17 +16,17 @@ export const routes: Routes = [
     path: 'characters/:id',
     component: CharacterDetailsComponent,
   },
-  {
-    path: '',
-    redirectTo: 'characters',
-    pathMatch: 'full'
-  },
-  {
-    path: '404',
-    component: NotFoundComponent
-  },
+  // {
+  //   path: '',
+  //   redirectTo: 'auth/login',
+  //   pathMatch: 'full'
+  // },
+  // {
+  //   path: '404',
+  //   component: NotFoundComponent
+  // },
   {
     path: '**',
-    redirectTo: '404',
+    redirectTo: 'auth',
   },
 ];
