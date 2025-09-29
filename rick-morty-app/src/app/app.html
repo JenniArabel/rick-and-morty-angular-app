@@ -1,5 +1,20 @@
-<!-- <h1 class="text-3xl font-bold underline">
-  Hello world!
-</h1> -->
+<div class="min-h-screen bg-[#333333] flex flex-col">
+  <!-- Header Global -->
+  <header class="bg-[#2c2c2c] border-b border-gray-600 shadow-lg">
+    <div class="container mx-auto px-4 py-2">
+      <app-header></app-header>
+    </div>
+  </header>
 
-<router-outlet />
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col">
+    <router-outlet />
+  </main>
+
+  <!-- Footer Global -->
+  <div class="bg-[#2c2c2c] border-t border-gray-600">
+    <div class="container mx-auto px-4 py-1">
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>
