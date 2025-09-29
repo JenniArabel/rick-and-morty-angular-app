@@ -1,0 +1,99 @@
+<div class="flex h-full bg-[#333333] min-h-[calc(100vh-120px)]">
+  <!-- Image -->
+  <div class="flex-1 flex items-center justify-center p-6">
+    <img
+      src="38f8034fa117465a45e877c707a99fb744f255d8_2_1024x576.png"
+      alt="Rick and Morty Logo"
+      class="max-w-full max-h-[60vh] object-contain"
+    />
+  </div>
+
+  <!-- Login Form -->
+  <div class="flex-1 flex items-center justify-center p-6">
+    <div class="bg-[#404040] p-5 rounded-lg w-full max-w-md shadow-lg">
+      <!-- Form -->
+      <form autocomplete="off" [formGroup]="myForm" class="space-y-6" (ngSubmit)="onSubmit()">
+        <!-- Email Field -->
+        <div>
+          <label
+            for="email"
+            class="block text-blue-400 text-sm font-medium mb-2"
+            >Email address</label
+          >
+
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="email@example.com"
+            class="form-control w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+          />
+
+          @if ( formUtils.isValidField(myForm, 'email')) {
+          <span class="form-text text-danger">
+            <!-- El valor ingresado no parece un correo electrónico -->
+            {{ formUtils.getFieldError(myForm, "email") }}
+          </span>
+          }
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <label
+            for="password"
+            class="block text-blue-400 text-sm font-medium mb-2"
+            >Password</label
+          >
+
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="Password"
+            class="form-control w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+          />
+
+          @if ( formUtils.isValidField(myForm, 'password')) {
+          <span class="form-text text-danger">
+            {{ formUtils.getFieldError(myForm, "password") }}
+          </span>
+          }
+        </div>
+
+        <!-- Remember Me -->
+        <div class="flex items-center">
+          <input
+            type="checkbox"
+            id="remember"
+            class="w-4 h-4 text-blue-400 bg-transparent border-gray-600 rounded focus:ring-blue-400 focus:ring-2"
+          />
+          <label for="remember" class="ml-2 text-gray-300 text-sm"
+            >Remember me</label
+          >
+        </div>
+
+        <!-- Sign In Button -->
+        <button
+          type="submit"
+          class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded transition-colors duration-200"
+        >
+          Sign in
+        </button>
+
+        <!-- Links -->
+        <div class="space-y-2 text-center">
+          <p>
+            <a href="#" class="text-blue-400 text-sm hover:underline"
+              >New around here? Sign up</a
+            >
+          </p>
+          <p>
+            <a href="#" class="text-blue-400 text-sm hover:underline"
+              >Forgot password?</a
+            >
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
