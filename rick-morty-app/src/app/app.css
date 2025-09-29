@@ -1,0 +1,13 @@
+/* Layout global styles */
+.main-content {
+  min-height: calc(
+    100vh - 120px
+  ); /* Ajustar según altura del header y footer */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    min-height: calc(100vh - 100px);
+  }
+}
