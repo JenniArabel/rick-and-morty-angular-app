@@ -1,3 +1,4 @@
+// Interface para usuario autenticado
 export interface User {
   email: string;
   name: string;
