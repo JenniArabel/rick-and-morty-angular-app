@@ -27,18 +27,27 @@ export class FormUtils {
         case 'email':
           return 'Por favor, ingresa un email válido';
 
-        case 'emailTaken':
-          return `El correo electrónico ya está siendo usado por otro usuario`;
-
-        case 'notStrider':
-          return 'El nombre de usuario no puede ser "strider"';
-
         case 'pattern':
           if (errors['pattern'].requiredPattern === FormUtils.emailPattern) {
             return 'El valor ingresado no luce como un correo electrónico';
           }
+          if (errors['pattern'].requiredPattern === FormUtils.passwordPattern) {
+            return 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
+          }
 
           return 'El valor ingresado no tiene el formato esperado';
+
+        case 'weakPassword':
+          return 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
+
+        case 'invalidEmailFormat':
+          return 'El email debe tener un formato válido';
+
+        case 'minLengthCustom':
+          return `La contraseña debe tener al menos ${errors['minLengthCustom'].requiredLength} caracteres`;
+
+        case 'passwordsNotEqual':
+          return 'Las contraseñas no coinciden';
 
         default:
           return `Error de validación no controlado ${key}`;
@@ -68,6 +77,39 @@ export class FormUtils {
       const field2Value = formGroup.get(field2)?.value;
 
       return field1Value === field2Value ? null : { passwordsNotEqual: true };
+    };
+  }
+
+  // Validador personalizado para contraseña segura (para registro)
+  static passwordValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+
+    const regex = new RegExp(FormUtils.passwordPattern);
+    const isValid = regex.test(value);
+
+    return isValid ? null : { weakPassword: true };
+  }
+
+  // Validador de email personalizado (verifica formato básico con punto y extensión)
+  static emailValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+
+    const regex = new RegExp(FormUtils.emailPattern);
+    const isValid = regex.test(value);
+
+    return isValid ? null : { invalidEmailFormat: true };
+  }
+
+  // Validador simple de longitud mínima para login
+  static minLengthValidator(minLength: number) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) return null;
+
+      const isValid = value.length >= minLength;
+      return isValid ? null : { minLengthCustom: { requiredLength: minLength, actualLength: value.length } };
     };
   }
 }
