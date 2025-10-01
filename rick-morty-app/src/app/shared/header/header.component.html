@@ -1,4 +1,16 @@
 <div class="flex justify-between items-center">
   <p class="text-[#7E7E7E] text-lg font-bold">Rick & Morty</p>
-  <a href="#" class="text-[#7E7E7E] text-sm hover:underline">Log as Guest</a>
+
+  <!-- Mostrar "Log as Guest" solo cuando NO esté autenticado -->
+  @if (showLogAsGuest) {
+  <a href="#" class="text-[#7E7E7E] text-sm hover:underline"> Log as Guest </a>
+  } @else {
+  <!-- Mostrar "Log Out" solo cuando SÍ esté autenticado -->
+  <button
+    (click)="logout()"
+    class="text-[#7E7E7E] text-sm hover:underline bg-transparent border-none cursor-pointer"
+  >
+    Log Out
+  </button>
+  }
 </div>
