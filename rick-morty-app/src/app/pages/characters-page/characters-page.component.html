@@ -1,5 +1,48 @@
 <section class="min-h-screen text-white">
   <div class="container mx-auto flex flex-col py-4">
+
+    <!-- Barra de búsqueda -->
+    <div class="w-[95%] lg:w-[80%] mx-auto mb-6">
+      <div class="relative">
+        <input
+          type="text"
+          placeholder="Search..."
+          class="w-xl px-4 py-3 pl-10 bg-[#222222] border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          #searchInput
+          (input)="onSearch(searchInput.value)"
+        />
+        <svg
+          class="absolute left-3 top-3.5 h-5 w-5 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+        @if (searchTerm()) {
+          <button
+            (click)="clearSearch()"
+            class="absolute right-3 top-3.5 text-gray-400 hover:text-white"
+            title="Limpiar búsqueda"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        }
+      </div>
+      @if (searchTerm()) {
+        <p class="text-gray-400 text-sm mt-2">
+          Resultados para: "{{ searchTerm() }}"
+        </p>
+      }
+    </div>
+
     @if (loading()) {
     <div class="flex justify-center">
       <div

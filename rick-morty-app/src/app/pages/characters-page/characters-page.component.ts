@@ -5,7 +5,14 @@
  */
 import { CharactersService } from '../../services/characters.service';
 import { Character } from './../../interfaces/ApiResponse';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+  OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CharacterCardComponent } from '../../components/character-card/character-card.component';
 import { PaginatorComponent } from '../../components/paginator/paginator.component';
@@ -16,11 +23,14 @@ import { PaginatorComponent } from '../../components/paginator/paginator.compone
   imports: [CommonModule, CharacterCardComponent, PaginatorComponent],
   templateUrl: './characters-page.component.html',
 })
-export class CharactersPageComponent implements OnInit {
+export class CharactersPageComponent implements OnInit, OnDestroy {
   // Implementamos OnInit para cargar los datos automáticamente cuando el componente se inicializa.
 
   // Injectamos el servicio de personajes para llamadas a la API
   private characterService = inject(CharactersService);
+
+  // Para manejar el debounce de búsqueda
+  private searchTimeout: any;
 
   // Manejo de estado usando signals
   characters = signal<Character[]>([]); // Lista de personajes a mostrar
@@ -28,6 +38,7 @@ export class CharactersPageComponent implements OnInit {
   totalPages = signal<number>(0); // Número total de páginas disponibles
   loading = signal<boolean>(false); // Indicador de estado de carga
   error = signal<string | null>(null); // Mensaje de error si lo hay
+  searchTerm = signal<string>(''); // Término de búsqueda actual
 
   /* Páginas a mostrar en el paginador
     Usamos computed para calcular dinámicamente la paginación,
@@ -63,6 +74,13 @@ export class CharactersPageComponent implements OnInit {
     this.loadPage(this.page());
   }
 
+  // Limpiamos el timeout cuando se destruye el componente
+  ngOnDestroy(): void {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+  }
+
   /**
    * Carga una página específica de personajes
    * @param pageNumber Número de página a cargar
@@ -76,23 +94,29 @@ export class CharactersPageComponent implements OnInit {
     this.error.set(null); // Limpiamos cualquier mensaje de error previo
 
     // Realizamos la llamada al servicio para obtener los personajes
-    this.characterService.getCharacters(pageNumber).subscribe({
-      next: (res) => {
-        // Limitamos a mostrar solo los primeros 10 personajes
-        const first10Characters = res.results.slice(0, 10);
-        this.characters.set(first10Characters);
-        this.totalPages.set(res.info.pages);
-        this.page.set(pageNumber);
-        this.loading.set(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this.error.set(
-          'No se pudieron cargar los personajes. Intenta recargar la página.'
-        );
-        this.loading.set(false);
-      },
-    });
+    // Incluimos el término de búsqueda si existe
+    const searchTerm = this.searchTerm();
+    this.characterService
+      .getCharacters(pageNumber, searchTerm || undefined)
+      .subscribe({
+        next: (res) => {
+          // Limitamos a mostrar solo los primeros 10 personajes
+          const first10Characters = res.results.slice(0, 10);
+          this.characters.set(first10Characters);
+          this.totalPages.set(res.info.pages);
+          this.page.set(pageNumber);
+          this.loading.set(false);
+        },
+        error: (err) => {
+          console.error(err);
+          this.error.set(
+            this.searchTerm()
+              ? `No se encontraron personajes con el nombre "${this.searchTerm()}".`
+              : 'No se pudieron cargar los personajes. Intenta recargar la página.'
+          );
+          this.loading.set(false);
+        },
+      });
   }
 
   /**
@@ -118,5 +142,35 @@ export class CharactersPageComponent implements OnInit {
 
   trackById(index: number, item: Character) {
     return item.id;
+  }
+
+  /**
+   * Maneja la búsqueda de personajes con debounce
+   * @param term Término de búsqueda
+   */
+  onSearch(term: string) {
+    // Limpiar el timeout anterior si existe
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+
+    // Actualizar el término de búsqueda inmediatamente para la UI
+    this.searchTerm.set(term);
+
+    // Aplicar debounce de 500ms para evitar demasiadas llamadas a la API
+    this.searchTimeout = setTimeout(() => {
+      // Resetear a la primera página cuando se hace una nueva búsqueda
+      this.page.set(1);
+      this.loadPage(1);
+    }, 500);
+  }
+
+  /**
+   * Limpia la búsqueda y recarga los personajes
+   */
+  clearSearch() {
+    this.searchTerm.set('');
+    this.page.set(1);
+    this.loadPage(1);
   }
 }

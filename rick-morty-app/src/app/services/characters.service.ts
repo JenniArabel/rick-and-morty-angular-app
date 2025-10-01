@@ -21,9 +21,16 @@ export class CharactersService {
    * La API ya viene paginada (20 por página).
    * Devuelve Observable<ApiResponse>.
    */
-  getCharacters(page: number = 1): Observable<ApiResponse> {
+  getCharacters(page: number = 1, name?: string): Observable<ApiResponse> {
+    let url = `${this.CHARACTER_URL}?page=${page}`;
+    
+    // Si hay un término de búsqueda, lo agregamos a la URL
+    if (name && name.trim()) {
+      url += `&name=${encodeURIComponent(name.trim())}`;
+    }
+    
     return this.http
-      .get<ApiResponse>(`${this.CHARACTER_URL}?page=${page}`)
+      .get<ApiResponse>(url)
       .pipe(catchError(this.handleError));
   }
 
