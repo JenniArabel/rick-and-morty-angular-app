@@ -14,19 +14,22 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { CharacterCardComponent } from '../../components/character-card/character-card.component';
 import { PaginatorComponent } from '../../components/paginator/paginator.component';
 
 @Component({
   selector: 'characters-page',
   standalone: true,
-  imports: [CommonModule, CharacterCardComponent, PaginatorComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    CharacterCardComponent,
+    PaginatorComponent,
+  ],
   templateUrl: './characters-page.component.html',
 })
 export class CharactersPageComponent implements OnInit, OnDestroy {
-  // Implementamos OnInit para cargar los datos automáticamente cuando el componente se inicializa.
-
-  // Injectamos el servicio de personajes para llamadas a la API
   private characterService = inject(CharactersService);
 
   // Para manejar el debounce de búsqueda
@@ -45,8 +48,7 @@ export class CharactersPageComponent implements OnInit, OnDestroy {
     mostrando 3 páginas consecutivas centradas en la actual.
   */
   pages = computed(() => {
-    // Página actual en la que el usuario se encuentra
-    const currentPage = this.page();
+    const currentPage = this.page(); // Página actual en la que el usuario se encuentra
     const lastPage = this.totalPages();
 
     // Mostrar 3 páginas consecutivas centradas en la página actual
@@ -54,14 +56,12 @@ export class CharactersPageComponent implements OnInit, OnDestroy {
     let start = currentPage - 1;
 
     // Ajustar el inicio si estamos cerca del principio o final
-    // Si estamos en la primera página (0 por eso es < 1), mostrar páginas 1, 2 y 3
-    if (start < 1) {
+    if (start < 1) { // Si estamos en la primera página (0 por eso es < 1), mostrar páginas 1, 2 y 3
       start = 1;
     } else if (start > lastPage - 2) {
       start = Math.max(1, lastPage - 2);
       /*Esta condición maneja el caso cuando estamos cerca del final
-      Usamos Math.max para asegurarnos de que no sea menor
-      que 1,
+      Usamos Math.max para asegurarnos de que no sea menor que 1,
       y para que start sea 2 números menos que el número de la última página.
       */
     }
