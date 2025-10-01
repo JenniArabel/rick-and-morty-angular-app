@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import {  noAuthGuard } from './guards/no-auth.guard';
+import { noAuthGuard } from './guards/no-auth.guard';
 
 export const authRoutes: Routes = [
   {
@@ -17,8 +17,8 @@ export const authRoutes: Routes = [
   {
     path: '**',
     redirectTo: 'login',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];
 
 export default authRoutes;
