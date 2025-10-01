@@ -1,95 +1,247 @@
+<div class="flex h-full bg-[#333333] min-h-[calc(100vh-120px)]">
+  <!-- Register Form - Centered -->
+  <div class="flex-1 flex items-center justify-center py-6">
+    <div class="bg-[#222222] px-16 py-3 rounded-lg w-full max-w-4xl shadow-lg">
+      <h2 class="text-center text-gray-500 text-2xl font-bold mb-1">
+        Register
+      </h2>
 
-<div class="row">
-  <div class="col">
-    <form autocomplete="off" [formGroup]="myForm" (ngSubmit)="onSubmit()">
-      // Nombre
-      <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">Nombre y apellido</label>
-        <div class="col-sm-9">
+      <!-- Success Message -->
+      @if (registerSuccess) {
+      <div
+        class="bg-green-900/50 border border-green-500 text-green-200 px-4 py-3 rounded mb-4"
+      >
+        ¡Registro exitoso! Redirigiendo al login...
+      </div>
+      }
+
+      <!-- Error Message -->
+      @if (registerError) {
+      <div
+        class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded mb-4"
+      >
+        {{ registerError }}
+      </div>
+      }
+
+      <!-- Form -->
+      <form
+        autocomplete="off"
+        [formGroup]="myForm"
+        class="space-y-2"
+        (ngSubmit)="onSubmit()"
+      >
+        <!-- Full Name and Email Row -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Full Name Field -->
+          <div>
+            <label
+              for="fullName"
+              class="block text-blue-400 text-sm font-medium mb-1"
+              >Full Name</label
+            >
+            <input
+              type="text"
+              id="fullName"
+              formControlName="fullName"
+              placeholder="Cosme Fulanito"
+              class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+            />
+            @if (formUtils.isValidField(myForm, 'fullName')) {
+            <span class="text-red-400 text-xs mt-1 block">
+              {{ formUtils.getFieldError(myForm, "fullName") }}
+            </span>
+            }
+          </div>
+
+          <!-- Email Field -->
+          <div>
+            <label
+              for="email"
+              class="block text-blue-400 text-sm font-medium mb-1"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="example@example.com"
+              class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+            />
+            @if (formUtils.isValidField(myForm, 'email')) {
+            <span class="text-red-400 text-xs mt-1 block">
+              {{ formUtils.getFieldError(myForm, "email") }}
+            </span>
+            }
+          </div>
+        </div>
+
+        <!-- Password and Repeat Password Row -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Password Field -->
+          <div>
+            <label
+              for="password"
+              class="block text-blue-400 text-sm font-medium mb-1"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              placeholder="Password"
+              class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+            />
+            @if (formUtils.isValidField(myForm, 'password')) {
+            <span class="text-red-400 text-xs mt-1 block">
+              {{ formUtils.getFieldError(myForm, "password") }}
+            </span>
+            }
+          </div>
+
+          <!-- Repeat Password Field -->
+          <div>
+            <label
+              for="password2"
+              class="block text-blue-400 text-sm font-medium mb-1"
+              >Repeat Password</label
+            >
+            <input
+              type="password"
+              id="password2"
+              formControlName="password2"
+              placeholder="Repeat Password"
+              class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+            />
+            @if (formUtils.isValidField(myForm, 'password2')) {
+            <span class="text-red-400 text-xs mt-1 block">
+              {{ formUtils.getFieldError(myForm, "password2") }}
+            </span>
+            }
+          </div>
+        </div>
+
+        <!-- Form-level validation error -->
+        @if (myForm.hasError('passwordsNotEqual') &&
+        myForm.get('password2')?.touched) {
+        <div
+          class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded"
+        >
+          Las contraseñas no coinciden
+        </div>
+        }
+
+        <!-- Address Field -->
+        <div>
+          <label
+            for="address"
+            class="block text-blue-400 text-sm font-medium mb-1"
+            >Address</label
+          >
           <input
             type="text"
-            class="form-control"
-            placeholder="Nombre y apellido"
-            formControlName="name"
+            id="address"
+            formControlName="address"
+            placeholder="Apartment, studio or floor"
+            class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
           />
+        </div>
 
-          @if ( formUtils.isValidField(myForm, 'name')) {
-          <span class="form-text text-danger">
-            El campo debe de tener nombre y apellido
-            // {{ formUtils.getFieldError(myForm, "name") }}
+        <!-- City, State, and Zip Row -->
+        <div class="grid grid-cols-3 gap-4">
+          <!-- City Field -->
+          <div>
+            <label
+              for="city"
+              class="block text-blue-400 text-sm font-medium mb-1"
+              >City</label
+            >
+            <input
+              type="text"
+              id="city"
+              formControlName="city"
+              placeholder="Cordoba"
+              class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+            />
+          </div>
+
+          <!-- State Field -->
+          <div>
+            <label
+              for="state"
+              class="block text-blue-400 text-sm font-medium mb-1"
+              >State</label
+            >
+            <input
+              type="text"
+              id="state"
+              formControlName="state"
+              placeholder="Argentina"
+              class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+            />
+          </div>
+
+          <!-- Zip Field -->
+          <div>
+            <label
+              for="zip"
+              class="block text-blue-400 text-sm font-medium mb-1"
+              >Zip</label
+            >
+            <input
+              type="text"
+              id="zip"
+              formControlName="zip"
+              placeholder="5000"
+              class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+            />
+          </div>
+        </div>
+
+        <!-- Sign Up Button -->
+        <button
+          type="submit"
+          [disabled]="isLoading || myForm.invalid"
+          class="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded transition-colors duration-200"
+        >
+          @if (isLoading) {
+          <span class="inline-flex items-center">
+            <svg
+              class="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Registrando...
           </span>
-          }
+          } @else { Sign Up }
+        </button>
+
+        <!-- Link to Login -->
+        <div class="text-center">
+          <button
+            type="button"
+            (click)="navigateToLogin()"
+            class="text-blue-400 text-sm hover:underline bg-transparent border-none cursor-pointer"
+          >
+            Already Signed Up? Sign In
+          </button>
         </div>
-      </div>
-
-      // Email
-      <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">Email</label>
-        <div class="col-sm-9">
-          <input
-            type="email"
-            class="form-control"
-            placeholder="Email del usuario"
-            formControlName="email"
-          />
-          @if ( formUtils.isValidField(myForm, 'email')) {
-          <span class="form-text text-danger">
-            // El valor ingresado no parece un correo electrónico
-            {{ formUtils.getFieldError(myForm, "email") }}
-          </span>
-          }
-        </div>
-      </div>
-
-      // Password
-      <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">Password</label>
-        <div class="col-sm-9">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Password de su cuenta"
-            formControlName="password"
-          />
-
-          @if ( formUtils.isValidField(myForm, 'password')) {
-          <span class="form-text text-danger">
-            {{ formUtils.getFieldError(myForm, "password") }}
-          </span>
-          }
-
-        </div>
-      </div>
-
-      // Password2
-      <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">Confirmar</label>
-        <div class="col-sm-9">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Confirmar la contraseña"
-            formControlName="password2"
-          />
-
-          @if ( formUtils.isValidField(myForm, 'password2')) {
-          <span class="form-text text-danger">
-            {{ formUtils.getFieldError(myForm, "password2") }}
-          </span>
-          }
-
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          @if( myForm.errors && myForm.touched ) {
-          <span class="text-danger"> Las contraseñas no son iguales </span>
-          }
-
-          <button class="btn btn-primary float-end" type="submit">Crear</button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
