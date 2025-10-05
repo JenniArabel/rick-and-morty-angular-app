@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/User';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {
@@ -24,6 +24,11 @@ export class HeaderComponent {
     const currentRoute = this.router.url;
     const isAuthRoute = currentRoute.includes('/auth/login') || currentRoute.includes('/auth/register');
     return !this.isLoggedIn || isAuthRoute;
+  }
+
+  get showNavigation(): boolean {
+    const currentRoute = this.router.url;
+    return !currentRoute.includes('/auth/');
   }
 
   logout(): void {

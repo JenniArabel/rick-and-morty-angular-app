@@ -1,10 +1,53 @@
 <div class="flex justify-between items-center">
-  <p class="text-[#7E7E7E] text-lg font-bold">Rick & Morty</p>
+  <div class="flex items-center gap-6">
+    <p class="text-[#7E7E7E] text-lg font-bold">Rick & Morty</p>
+    
+    <!-- Navigation tabs - mostrar cuando no esté en rutas de auth -->
+    @if (showNavigation) {
+    <nav class="flex space-x-1">
+      <a 
+        routerLink="/characters" 
+        routerLinkActive="bg-gray-700 text-white"
+        class="px-4 py-2 rounded-t-lg text-[#7E7E7E] hover:bg-gray-600 hover:text-white transition-all duration-200 relative font-medium"
+      >
+        Characters
+        <span 
+          class="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold"
+        >
+          84
+        </span>
+      </a>
+      <a 
+        routerLink="/episodes" 
+        routerLinkActive="bg-gray-700 text-white"
+        class="px-4 py-2 rounded-t-lg text-[#7E7E7E] hover:bg-gray-600 hover:text-white transition-all duration-200 relative font-medium"
+      >
+        Episodes
+        <span 
+          class="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold"
+        >
+          42
+        </span>
+      </a>
+      <a 
+        routerLink="/locations" 
+        routerLinkActive="bg-gray-700 text-white"
+        class="px-4 py-2 rounded-t-lg text-[#7E7E7E] hover:bg-gray-600 hover:text-white transition-all duration-200 font-medium"
+      >
+        Locations
+      </a>
+    </nav>
+    }
+  </div>
 
   <!-- Mostrar "Log as Guest" solo cuando NO esté autenticado -->
   @if (showLogAsGuest) {
-  <a href="#" class="text-[#7E7E7E] text-sm hover:underline"> Log as Guest </a>
-  <!-- A donde redirigir cuando se hace clic en "Log as Guest"? -->
+  <a 
+    routerLink="/characters" 
+    class="text-[#7E7E7E] text-sm hover:underline"
+  > 
+    Log as Guest 
+  </a>
   } @else {
   <!-- Mostrar sólo cuando SÍ esté autenticado -->
   <div class="flex items-center gap-10">
