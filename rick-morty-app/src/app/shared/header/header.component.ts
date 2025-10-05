@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { User } from '../../interfaces/User';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,10 @@ export class HeaderComponent {
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
+  }
+
+  get currentUser(): User | null {
+    return this.authService.getCurrentUser();
   }
 
   get showLogAsGuest(): boolean {

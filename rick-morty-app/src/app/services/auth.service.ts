@@ -175,7 +175,6 @@ export class AuthService {
     localStorage.removeItem(this.USER_KEY);
   }
 
-  /**
   // Metodo para obtener el usuario actual, se puede usar en el header para mostrar el nombre o un mensaje de bienvenida {name} personalizado
   getCurrentUser(): User | null {
     const userStr = localStorage.getItem(this.USER_KEY); // Obtiene string del localStorage
@@ -187,22 +186,4 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
-
-  Ej: se puede usar en el service de characters:
-  // characters.service.ts
-    getRickAndMortyCharacters() {
-      const token = this.authService.getToken();
-
-      if (!token) {
-        throw new Error('No hay token de autenticación');
-      }
-
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
-      return this.http.get('https://rickandmortyapi.com/api/character', { headers });
-    }
-  */
 }

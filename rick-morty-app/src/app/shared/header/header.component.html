@@ -6,12 +6,17 @@
   <a href="#" class="text-[#7E7E7E] text-sm hover:underline"> Log as Guest </a>
   <!-- A donde redirigir cuando se hace clic en "Log as Guest"? -->
   } @else {
-  <!-- Mostrar "Log Out" solo cuando SÍ esté autenticado -->
-  <button
-    (click)="logout()"
-    class="text-[#7E7E7E] text-sm hover:underline bg-transparent border-none cursor-pointer"
-  >
-    Log Out
-  </button>
+  <!-- Mostrar sólo cuando SÍ esté autenticado -->
+  <div class="flex items-center gap-10">
+    <span class="text-[#7E7E7E] text-sm">
+      {{ currentUser?.name || 'Usuario' }}
+    </span>
+    <button
+      (click)="logout()"
+      class="text-[#7E7E7E] text-sm hover:underline bg-transparent border-none cursor-pointer"
+    >
+      Log Out
+    </button>
+  </div>
   }
 </div>
