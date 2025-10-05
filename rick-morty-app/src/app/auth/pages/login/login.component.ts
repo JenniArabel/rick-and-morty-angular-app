@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { FormUtils } from '../../../utils/form-utils';
 import { AuthService } from '../../../services/auth.service';
+import { AuthErrorHandlerService } from '../../services/auth-error-handler.service';
 
 @Component({
   selector: 'login',
@@ -19,6 +20,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private authErrorHandler = inject(AuthErrorHandlerService);
 
   formUtils = FormUtils;
   isLoading = false;
@@ -46,23 +48,8 @@ export class LoginComponent {
         },
         error: (error) => {
           this.isLoading = false;
-
-          // Manejar diferentes tipos de errores de la API
-          if (error.status === 401) {
-            this.loginError =
-              'Credenciales incorrectas. Verifica tu email y contraseña.';
-          } else if (error.status === 400) {
-            this.loginError =
-              error.error?.message || 'Datos de login inválidos.';
-          } else if (error.status === 0) {
-            this.loginError =
-              'No se puede conectar con el servidor. Verifica tu conexión a internet.';
-          } else {
-            this.loginError =
-              error.error?.message ||
-              error.message ||
-              'Error al iniciar sesión. Inténtalo nuevamente.';
-          }
+          // Usar el servicio centralizado para manejar errores de login
+          this.loginError = this.authErrorHandler.handleLoginError(error);
         },
         complete: () => {
           this.isLoading = false;

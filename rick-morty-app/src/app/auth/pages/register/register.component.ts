@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormUtils } from '../../../utils/form-utils';
 import { AuthService } from '../../../services/auth.service';
 import { RegisterData } from '../../../interfaces/RegisterData';
+import { AuthErrorHandlerService } from '../../services/auth-error-handler.service';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +15,7 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private authErrorHandler = inject(AuthErrorHandlerService);
 
   formUtils = FormUtils;
   isLoading = false;
@@ -68,22 +70,8 @@ export class RegisterComponent {
         },
         error: (error) => {
           this.isLoading = false;
-
-          // Manejar diferentes tipos de errores
-          if (error.status === 400) {
-            this.registerError =
-              error.error?.message || 'Datos de registro inválidos.';
-          } else if (error.status === 409) {
-            this.registerError =
-              'El email ya está registrado. Intenta con otro email.';
-          } else if (error.status === 0) {
-            this.registerError =
-              'No se puede conectar con el servidor. Verifica tu conexión a internet.';
-          } else {
-            this.registerError =
-              error.message ||
-              'Error al registrar usuario. Inténtalo nuevamente.';
-          }
+          // Usar el servicio centralizado para manejar errores de registro
+          this.registerError = this.authErrorHandler.handleRegisterError(error);
         },
       });
     } else {
