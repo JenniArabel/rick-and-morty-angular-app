@@ -20,13 +20,17 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'episodes',
+    redirectTo: '404',
+  },
+  {
+    path: 'locations',
+    redirectTo: '404',
+  },
+  {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full'
-  },
-  {
-    path: '404',
-    component: NotFoundComponent
   },
   {
     path: '**',
