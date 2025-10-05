@@ -1,6 +1,6 @@
 // Interface para usuario autenticado
 export interface User {
-  email: string;
+  mail: string;
   name: string;
   address?: string;
   city?: string;
