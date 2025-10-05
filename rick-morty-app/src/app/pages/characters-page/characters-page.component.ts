@@ -5,14 +5,7 @@
  */
 import { CharactersService } from '../../services/characters.service';
 import { Character } from './../../interfaces/ApiResponse';
-import {
-  Component,
-  computed,
-  inject,
-  OnInit,
-  signal,
-  OnDestroy,
-} from '@angular/core';
+import { Component, computed, inject, OnInit, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CharacterCardComponent } from '../../components/character-card/character-card.component';
@@ -21,12 +14,7 @@ import { PaginatorComponent } from '../../components/paginator/paginator.compone
 @Component({
   selector: 'characters-page',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    CharacterCardComponent,
-    PaginatorComponent,
-  ],
+  imports: [ CommonModule, RouterModule, CharacterCardComponent, PaginatorComponent ],
   templateUrl: './characters-page.component.html',
 })
 export class CharactersPageComponent implements OnInit, OnDestroy {
@@ -60,7 +48,7 @@ export class CharactersPageComponent implements OnInit, OnDestroy {
       start = 1;
     } else if (start > lastPage - 2) {
       start = Math.max(1, lastPage - 2);
-      /*Esta condición maneja el caso cuando estamos cerca del final
+      /* Esta condición maneja el caso cuando estamos cerca del final
       Usamos Math.max para asegurarnos de que no sea menor que 1,
       y para que start sea 2 números menos que el número de la última página.
       */
