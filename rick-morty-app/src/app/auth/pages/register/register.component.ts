@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormUtils } from '../../../utils/form-utils';
 import { AuthService } from '../../../services/auth.service';
-import { RegisterData } from '../../../interfaces/RegisterData';
+import { RegisterData, Address } from '../../../interfaces/RegisterData';
 import { AuthErrorHandlerService } from '../../services/auth-error-handler.service';
 
 @Component({
@@ -24,20 +24,26 @@ export class RegisterComponent {
 
   myForm = this.fb.group(
     {
-      fullName: [
+      name: [
         '',
-        [Validators.required, Validators.pattern(FormUtils.fullNamePattern)],
+        [Validators.required, FormUtils.nameValidator], // min 5, max 15 caracteres
       ],
-      email: ['', [Validators.required, FormUtils.emailValidator]], // Mismo email
-      password: ['', [Validators.required, FormUtils.passwordValidator]], // Contraseña compleja
+      mail: ['', [Validators.required, FormUtils.mailValidator]], // min 10, max 50 caracteres
+      password: [
+        '',
+        [Validators.required, FormUtils.passwordValidatorWithLength],
+      ], // min 8, max 30 caracteres
       password2: ['', Validators.required],
-      address: [''],
+      address: [''], // Dirección física (calle, número, depto)
       city: [''],
       state: [''],
       zip: [''],
     },
     {
-      validators: [FormUtils.isFieldOneEqualFieldTwo('password', 'password2')],
+      validators: [
+        FormUtils.isFieldOneEqualFieldTwo('password', 'password2'),
+        FormUtils.addressGroupValidator,
+      ],
     }
   );
 
@@ -48,14 +54,23 @@ export class RegisterComponent {
       this.registerSuccess = false;
 
       const formData = this.myForm.value;
+
+      // Crear objeto de dirección solo si se proporcionan todos los campos
+      let address: Address | undefined = undefined;
+      if (formData.address && formData.city && formData.state && formData.zip) {
+        address = {
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zip: formData.zip,
+        };
+      }
+
       const registerData: RegisterData = {
-        fullName: formData.fullName || '',
-        email: formData.email || '',
+        name: formData.name || '',
+        mail: formData.mail || '',
         password: formData.password || '',
-        address: formData.address || undefined,
-        city: formData.city || undefined,
-        state: formData.state || undefined,
-        zip: formData.zip || undefined,
+        address: address,
       };
 
       this.authService.registerUser(registerData).subscribe({

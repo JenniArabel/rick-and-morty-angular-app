@@ -31,46 +31,46 @@
         class="space-y-2"
         (ngSubmit)="onSubmit()"
       >
-        <!-- Full Name and Email Row -->
+        <!-- Name and Mail Row -->
         <div class="grid grid-cols-2 gap-4">
-          <!-- Full Name Field -->
+          <!-- Name Field -->
           <div>
             <label
-              for="fullName"
+              for="name"
               class="block text-blue-400 text-sm font-medium mb-1"
               >Full Name</label
             >
             <input
               type="text"
-              id="fullName"
-              formControlName="fullName"
+              id="name"
+              formControlName="name"
               placeholder="Cosme Fulanito"
               class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
             />
-            @if (formUtils.isValidField(myForm, 'fullName')) {
+            @if (formUtils.isValidField(myForm, 'name')) {
             <span class="text-red-400 text-xs mt-1 block">
-              {{ formUtils.getFieldError(myForm, "fullName") }}
+              {{ formUtils.getFieldError(myForm, "name") }}
             </span>
             }
           </div>
 
-          <!-- Email Field -->
+          <!-- Mail Field -->
           <div>
             <label
-              for="email"
+              for="mail"
               class="block text-blue-400 text-sm font-medium mb-1"
               >Email</label
             >
             <input
               type="email"
-              id="email"
-              formControlName="email"
+              id="mail"
+              formControlName="mail"
               placeholder="example@example.com"
               class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
             />
-            @if (formUtils.isValidField(myForm, 'email')) {
+            @if (formUtils.isValidField(myForm, 'mail')) {
             <span class="text-red-400 text-xs mt-1 block">
-              {{ formUtils.getFieldError(myForm, "email") }}
+              {{ formUtils.getFieldError(myForm, "mail") }}
             </span>
             }
           </div>
@@ -129,9 +129,14 @@
         >
           Las contraseñas no coinciden
         </div>
+        } @if (myForm.hasError('incompleteAddress')) {
+        <div
+          class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded"
+        >
+          Si proporciona dirección, debe completar todos los campos de dirección
+        </div>
         }
 
-        <!-- Address Field -->
         <div>
           <label
             for="address"
@@ -145,6 +150,11 @@
             placeholder="Apartment, studio or floor"
             class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
           />
+          @if (formUtils.isValidField(myForm, 'address')) {
+          <span class="text-red-400 text-xs mt-1 block">
+            {{ formUtils.getFieldError(myForm, "address") }}
+          </span>
+          }
         </div>
 
         <!-- City, State, and Zip Row -->
@@ -163,6 +173,11 @@
               placeholder="Cordoba"
               class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
             />
+            @if (formUtils.isValidField(myForm, 'city')) {
+            <span class="text-red-400 text-xs mt-1 block">
+              {{ formUtils.getFieldError(myForm, "city") }}
+            </span>
+            }
           </div>
 
           <!-- State Field -->
@@ -179,6 +194,11 @@
               placeholder="Argentina"
               class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
             />
+            @if (formUtils.isValidField(myForm, 'state')) {
+            <span class="text-red-400 text-xs mt-1 block">
+              {{ formUtils.getFieldError(myForm, "state") }}
+            </span>
+            }
           </div>
 
           <!-- Zip Field -->
@@ -195,6 +215,11 @@
               placeholder="5000"
               class="w-full bg-[#2c2c2c] border border-gray-600 rounded px-3 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
             />
+            @if (formUtils.isValidField(myForm, 'zip')) {
+            <span class="text-red-400 text-xs mt-1 block">
+              {{ formUtils.getFieldError(myForm, "zip") }}
+            </span>
+            }
           </div>
         </div>
 

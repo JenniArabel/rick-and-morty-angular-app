@@ -6,54 +6,52 @@ import { RegisterData } from '../interfaces/RegisterData';
 import { MockUser } from '../interfaces/MockUser';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MockAuthService {
-
   // Mock de usuarios para cuando la API esté en mantenimiento
   private mockUsers: MockUser[] = [
     {
-      email: 'admin@test.com',
+      mail: 'admin@test.com',
       password: '123456',
       name: 'Administrador',
-      address: '123 Admin St',
-      city: 'Admin City',
-      state: 'AC',
-      zip: '12345'
+      address: {
+        address: 'Av. Córdoba 1234',
+        city: 'Admin City',
+        state: 'AC',
+        zip: '12345',
+      },
     },
     {
-      email: 'user@test.com',
+      mail: 'user@test.com',
       password: '123456',
       name: 'Usuario Test',
-      phone: '+1234567890'
+      phone: '+1234567890',
     },
     {
-      email: 'demo@demo.com',
+      mail: 'demo@demo.com',
       password: 'demo123',
-      name: 'Demo User'
+      name: 'Demo User',
     },
   ];
 
   // Mock de login para cuando la API esté en mantenimiento
-  mockLogin(email: string, password: string): Observable<AuthResponse> {
+  mockLogin(mail: string, password: string): Observable<AuthResponse> {
     return of(null).pipe(
       delay(1000), // Simular delay de red
       map(() => {
         // Buscar usuario en el mock
         const user = this.mockUsers.find(
-          (u) => u.email === email && u.password === password
+          (u) => u.mail === mail && u.password === password
         );
 
         if (user) {
           const authResponse: AuthResponse = {
             token: `mock-token-${Date.now()}`,
             user: {
-              email: email,
+              mail: mail,
               name: user.name,
               address: user.address,
-              city: user.city,
-              state: user.state,
-              zip: user.zip,
               phone: user.phone,
             },
           };
@@ -70,22 +68,21 @@ export class MockAuthService {
     return of(null).pipe(
       delay(1000), // Simular delay de red
       map(() => {
-        // Verificar si el email ya existe
-        const existingUser = this.mockUsers.find(u => u.email === registerData.email);
+        // Verificar si el mail ya existe
+        const existingUser = this.mockUsers.find(
+          (u) => u.mail === registerData.mail
+        );
 
         if (existingUser) {
-          throw new Error('El email ya está registrado');
+          throw new Error('El mail ya está registrado');
         }
 
         // Agregar usuario al mock
-        const newUser = {
-          email: registerData.email,
+        const newUser: MockUser = {
+          mail: registerData.mail,
           password: registerData.password,
-          name: registerData.fullName,
+          name: registerData.name,
           address: registerData.address,
-          city: registerData.city,
-          state: registerData.state,
-          zip: registerData.zip,
           phone: registerData.phone,
           birthday: registerData.birthday,
         };
@@ -96,9 +93,9 @@ export class MockAuthService {
           success: true,
           message: 'Usuario registrado exitosamente',
           user: {
-            email: registerData.email,
-            fullName: registerData.fullName
-          }
+            mail: registerData.mail,
+            name: registerData.name,
+          },
         };
       })
     );

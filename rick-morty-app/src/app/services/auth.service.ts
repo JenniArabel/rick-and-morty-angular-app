@@ -13,8 +13,10 @@ import { MockAuthService } from './mock-auth.service';
 export class AuthService {
   private readonly TOKEN_KEY = 'authToken';
   private readonly USER_KEY = 'currentUser';
-  private readonly API_LOGIN_URL = 'https://api-auth-moby.herokuapp.com/api/user/login';
-  private readonly API_REGISTER_URL = 'https://api-auth-moby.herokuapp.com/api/user';
+  private readonly API_LOGIN_URL =
+    'https://api-auth-moby.herokuapp.com/api/user/login';
+  private readonly API_REGISTER_URL =
+    'https://api-auth-moby.herokuapp.com/api/user';
   private http = inject(HttpClient);
   private mockAuthService = inject(MockAuthService);
 
@@ -23,28 +25,38 @@ export class AuthService {
 
   // Método principal para login con credenciales
   loginWithCredentials(
-    email: string,
+    mail: string,
     password: string
   ): Observable<AuthResponse> {
     // 🚨 Si la API está en mantenimiento, usar mock
     if (this.USE_MOCK) {
-      return this.mockAuthService.mockLogin(email, password);
+      return this.mockAuthService.mockLogin(mail, password);
     }
 
     // Llamada real a la API
-    const loginData = { email, password };
+    const loginData = { mail, password };
     return this.http.post<any>(this.API_LOGIN_URL, loginData).pipe(
       map((response) => {
         // Adaptar la respuesta de la API al formato AuthResponse
+        let address = undefined;
+        if (
+          response.user?.address ||
+          (response.user?.city && response.user?.state && response.user?.zip)
+        ) {
+          address = {
+            address: response.user?.address || '',
+            city: response.user?.city || '',
+            state: response.user?.state || '',
+            zip: response.user?.zip || '',
+          };
+        }
+
         const authResponse: AuthResponse = {
           token: response.token || response.accessToken || response.jwt,
           user: {
-            email: email,
-            name: response.user?.name || email.split('@')[0],
-            address: response.user?.address,
-            city: response.user?.city,
-            state: response.user?.state,
-            zip: response.user?.zip,
+            mail: mail,
+            name: response.user?.name || mail.split('@')[0],
+            address: address,
             phone: response.user?.phone,
             birthday: response.user?.birthday,
           },
