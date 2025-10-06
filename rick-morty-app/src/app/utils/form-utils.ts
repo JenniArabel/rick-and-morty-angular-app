@@ -6,9 +6,8 @@ import {
 } from '@angular/forms';
 
 export class FormUtils {
-  // Expresiones regulares para validación
   static readonly fullNamePattern =
-    '^[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]+\\s+[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]+$'; // Nombre y apellido con espacio, incluye acentos y ñ
+    '^[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]+\\s+[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]+$';
   static readonly emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   static readonly passwordPattern =
     '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d@$!%*?&]{8,}$';
@@ -84,7 +83,6 @@ export class FormUtils {
     return null;
   }
 
-  // Método para validar si un campo es valido o no
   static isValidField(form: FormGroup, fieldName: string): boolean | null {
     return (
       !!form.controls[fieldName].errors && form.controls[fieldName].touched
@@ -108,7 +106,6 @@ export class FormUtils {
     };
   }
 
-  // Validador simple de longitud mínima para login
   static minLengthValidator(minLength: number) {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
@@ -126,7 +123,6 @@ export class FormUtils {
     };
   }
 
-  // Validador para nombre (min 5, max 15 caracteres y formato nombre apellido)
   static nameValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
     if (!value) return null;
@@ -147,7 +143,6 @@ export class FormUtils {
       };
     }
 
-    // Validar patrón de nombre y apellido
     const nameRegex = new RegExp(FormUtils.fullNamePattern);
     if (!nameRegex.test(value)) {
       return { invalidNameFormat: true };
@@ -156,7 +151,6 @@ export class FormUtils {
     return null;
   }
 
-  // Validador para mail (min 10, max 50 caracteres)
   static mailValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
     if (!value) return null;
@@ -165,13 +159,10 @@ export class FormUtils {
       return { invalidType: true };
     }
 
-    // Primero validar el formato de email
     const emailRegex = new RegExp(FormUtils.emailPattern);
     if (!emailRegex.test(value)) {
       return { invalidEmailFormat: true };
     }
-
-    // Luego validar la longitud
     if (value.length < 10) {
       return {
         mailMinLength: { requiredLength: 10, actualLength: value.length },
@@ -187,7 +178,6 @@ export class FormUtils {
     return null;
   }
 
-  // Validador para password (min 8, max 30 caracteres)
   static passwordValidatorWithLength(
     control: AbstractControl
   ): ValidationErrors | null {
@@ -198,7 +188,6 @@ export class FormUtils {
       return { invalidType: true };
     }
 
-    // Validar longitud primero
     if (value.length < 8) {
       return {
         passwordMinLength: { requiredLength: 8, actualLength: value.length },
@@ -210,8 +199,6 @@ export class FormUtils {
         passwordMaxLength: { requiredLength: 30, actualLength: value.length },
       };
     }
-
-    // Validar patrón de contraseña segura
     const regex = new RegExp(FormUtils.passwordPattern);
     if (!regex.test(value)) {
       return { weakPassword: true };
@@ -220,14 +207,12 @@ export class FormUtils {
     return null;
   }
 
-  // Validador para grupo de campos de dirección
   static addressGroupValidator(form: FormGroup): ValidationErrors | null {
     const address = form.get('address')?.value;
     const city = form.get('city')?.value;
     const state = form.get('state')?.value;
     const zip = form.get('zip')?.value;
 
-    // Si al menos uno de los campos de dirección tiene valor, todos deben tener valor
     const hasAnyAddressField = address || city || state || zip;
 
     if (hasAnyAddressField) {

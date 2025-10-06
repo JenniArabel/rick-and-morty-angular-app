@@ -40,15 +40,11 @@ export class LoginComponent {
 
       this.authService.loginWithCredentials(email, password).subscribe({
         next: (authResponse) => {
-          // Guardar datos de autenticación
           this.authService.saveAuthData(authResponse);
-
-          // Redirigir al listado de personajes
           this.router.navigate(['/characters']);
         },
         error: (error) => {
           this.isLoading = false;
-          // Usar el servicio centralizado para manejar errores de login
           this.loginError = this.authErrorHandler.handleLoginError(error);
         },
         complete: () => {

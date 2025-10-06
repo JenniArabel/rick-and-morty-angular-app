@@ -24,17 +24,14 @@ export class RegisterComponent {
 
   myForm = this.fb.group(
     {
-      name: [
-        '',
-        [Validators.required, FormUtils.nameValidator], // min 5, max 15 caracteres
-      ],
-      mail: ['', [Validators.required, FormUtils.mailValidator]], // min 10, max 50 caracteres
+      name: ['', [Validators.required, FormUtils.nameValidator]],
+      mail: ['', [Validators.required, FormUtils.mailValidator]],
       password: [
         '',
         [Validators.required, FormUtils.passwordValidatorWithLength],
-      ], // min 8, max 30 caracteres
+      ],
       password2: ['', Validators.required],
-      address: [''], // Dirección física (calle, número, depto)
+      address: [''],
       city: [''],
       state: [''],
       zip: [''],
@@ -55,15 +52,14 @@ export class RegisterComponent {
 
       const formData = this.myForm.value;
 
-      // Crear objeto de dirección solo si se proporcionan todos los campos
       let address: Address | undefined = undefined;
       if (formData.address && formData.city && formData.state && formData.zip) {
         address = {
-          street: formData.address, // address del form → street en API
-          location: '', // opcional, se puede llenar después
-          city: formData.city, // city se mantiene igual
-          country: formData.state, // state del form → country en API
-          cp: formData.zip, // zip del form → cp en API
+          street: formData.address,
+          location: '',
+          city: formData.city,
+          country: formData.state,
+          cp: formData.zip,
         };
       }
 
@@ -79,14 +75,12 @@ export class RegisterComponent {
           this.registerSuccess = true;
           this.isLoading = false;
 
-          // Mostrar mensaje de éxito y redirigir después de 2 segundos
           setTimeout(() => {
             this.router.navigate(['/auth/login']);
           }, 2000);
         },
         error: (error) => {
           this.isLoading = false;
-          // Usar el servicio centralizado para manejar errores de registro
           this.registerError = this.authErrorHandler.handleRegisterError(error);
         },
       });

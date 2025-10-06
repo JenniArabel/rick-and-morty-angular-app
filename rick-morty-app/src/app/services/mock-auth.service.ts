@@ -9,7 +9,6 @@ import { MockUser } from '../interfaces/MockUser';
   providedIn: 'root',
 })
 export class MockAuthService {
-  // Mock de usuarios para cuando la API esté en mantenimiento
   private mockUsers: MockUser[] = [
     {
       mail: 'admin@test.com',
@@ -36,12 +35,10 @@ export class MockAuthService {
     },
   ];
 
-  // Mock de login para cuando la API esté en mantenimiento
   mockLogin(mail: string, password: string): Observable<AuthResponse> {
     return of(null).pipe(
-      delay(1000), // Simular delay de red
+      delay(1000),
       map(() => {
-        // Buscar usuario en el mock
         const user = this.mockUsers.find(
           (u) => u.mail === mail && u.password === password
         );
@@ -64,12 +61,10 @@ export class MockAuthService {
     );
   }
 
-  // Mock de registro para cuando la API esté en mantenimiento
   mockRegister(registerData: RegisterData): Observable<any> {
     return of(null).pipe(
-      delay(1000), // Simular delay de red
+      delay(1000),
       map(() => {
-        // Verificar si el mail ya existe
         const existingUser = this.mockUsers.find(
           (u) => u.mail === registerData.mail
         );
@@ -78,7 +73,6 @@ export class MockAuthService {
           throw new Error('El mail ya está registrado');
         }
 
-        // Agregar usuario al mock
         const newUser: MockUser = {
           mail: registerData.mail,
           password: registerData.password,
@@ -89,7 +83,6 @@ export class MockAuthService {
         };
         this.mockUsers.push(newUser);
 
-        // Respuesta exitosa del registro
         return {
           success: true,
           message: 'Usuario registrado exitosamente',
@@ -102,7 +95,6 @@ export class MockAuthService {
     );
   }
 
-  //Agregar usuario mock (para testing)
   addMockUser(user: MockUser): void {
     this.mockUsers.push(user);
   }

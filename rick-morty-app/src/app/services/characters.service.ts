@@ -8,12 +8,10 @@ import { Episode } from '../interfaces/Episode';
   providedIn: 'root',
 })
 export class CharactersService {
-  // Endpoint base de la API
   private API_URL = 'https://rickandmortyapi.com/api';
   private CHARACTER_URL = `${this.API_URL}/character`;
   private EPISODE_URL = `${this.API_URL}/episode`;
 
-  // usamos la nueva API de inyección (inject) en vez de constructor
   private http = inject(HttpClient);
 
   /**
@@ -23,24 +21,19 @@ export class CharactersService {
    */
   getCharacters(page: number = 1, name?: string): Observable<ApiResponse> {
     let url = `${this.CHARACTER_URL}?page=${page}`;
-    
-    // Si hay un término de búsqueda, lo agregamos a la URL
+
     if (name && name.trim()) {
       url += `&name=${encodeURIComponent(name.trim())}`;
     }
-    
-    return this.http
-      .get<ApiResponse>(url)
-      .pipe(catchError(this.handleError));
+
+    return this.http.get<ApiResponse>(url).pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ha ocurrido un error';
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Error del lado del servidor
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(() => errorMessage);
