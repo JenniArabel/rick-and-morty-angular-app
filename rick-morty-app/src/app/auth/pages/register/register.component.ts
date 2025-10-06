@@ -59,10 +59,11 @@ export class RegisterComponent {
       let address: Address | undefined = undefined;
       if (formData.address && formData.city && formData.state && formData.zip) {
         address = {
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          zip: formData.zip,
+          street: formData.address, // address del form → street en API
+          location: '', // opcional, se puede llenar después
+          city: formData.city, // city se mantiene igual
+          country: formData.state, // state del form → country en API
+          cp: formData.zip, // zip del form → cp en API
         };
       }
 

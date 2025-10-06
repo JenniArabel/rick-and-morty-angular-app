@@ -7,8 +7,9 @@ import {
 
 export class FormUtils {
   // Expresiones regulares para validación
-  static fullNamePattern = '([a-zA-Z]+) ([a-zA-Z]+)'; // Nombre y apellido con espacio en medio, cualquier cantidad de caracteres
-  static readonly emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'; // hasta 9 caracteres antes de la @, dominio (despues del .) de hasta 4 letras
+  static readonly fullNamePattern =
+    '^[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]+\\s+[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]+$'; // Nombre y apellido con espacio, incluye acentos y ñ
+  static readonly emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   static readonly passwordPattern =
     '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d@$!%*?&]{8,}$';
 
@@ -73,6 +74,9 @@ export class FormUtils {
         case 'invalidType':
           return 'El tipo de dato no es válido';
 
+        case 'invalidNameFormat':
+          return 'Debe ingresar nombre y apellido separados por espacio';
+
         default:
           return `Error de validación no controlado ${key}`;
       }
@@ -104,28 +108,6 @@ export class FormUtils {
     };
   }
 
-  // Validador personalizado para contraseña segura (para registro)
-  static passwordValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-    if (!value) return null;
-
-    const regex = new RegExp(FormUtils.passwordPattern);
-    const isValid = regex.test(value);
-
-    return isValid ? null : { weakPassword: true };
-  }
-
-  // Validador de email personalizado (verifica formato básico con punto y extensión)
-  static emailValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-    if (!value) return null;
-
-    const regex = new RegExp(FormUtils.emailPattern);
-    const isValid = regex.test(value);
-
-    return isValid ? null : { invalidEmailFormat: true };
-  }
-
   // Validador simple de longitud mínima para login
   static minLengthValidator(minLength: number) {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -144,7 +126,7 @@ export class FormUtils {
     };
   }
 
-  // Validador para nombre (min 5, max 15 caracteres)
+  // Validador para nombre (min 5, max 15 caracteres y formato nombre apellido)
   static nameValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
     if (!value) return null;
@@ -163,6 +145,12 @@ export class FormUtils {
       return {
         nameMaxLength: { requiredLength: 15, actualLength: value.length },
       };
+    }
+
+    // Validar patrón de nombre y apellido
+    const nameRegex = new RegExp(FormUtils.fullNamePattern);
+    if (!nameRegex.test(value)) {
+      return { invalidNameFormat: true };
     }
 
     return null;

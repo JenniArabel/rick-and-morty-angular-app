@@ -16,10 +16,11 @@ export class MockAuthService {
       password: '123456',
       name: 'Administrador',
       address: {
-        address: 'Av. Córdoba 1234',
-        city: 'Admin City',
-        state: 'AC',
-        zip: '12345',
+        street: 'Av. Córdoba 1234',
+        location: 'Piso 5',
+        city: 'CABA',
+        country: 'Argentina',
+        cp: '1001',
       },
     },
     {

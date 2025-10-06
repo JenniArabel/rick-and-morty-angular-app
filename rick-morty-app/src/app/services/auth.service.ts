@@ -39,15 +39,13 @@ export class AuthService {
       map((response) => {
         // Adaptar la respuesta de la API al formato AuthResponse
         let address = undefined;
-        if (
-          response.user?.address ||
-          (response.user?.city && response.user?.state && response.user?.zip)
-        ) {
+        if (response.user?.address) {
           address = {
-            address: response.user?.address || '',
-            city: response.user?.city || '',
-            state: response.user?.state || '',
-            zip: response.user?.zip || '',
+            street: response.user.address.street || '',
+            location: response.user.address.location || '',
+            city: response.user.address.city || '',
+            country: response.user.address.country || '',
+            cp: response.user.address.cp || '',
           };
         }
 

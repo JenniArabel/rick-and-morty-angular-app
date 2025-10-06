@@ -1,9 +1,10 @@
 // Interface para datos de registro de usuario
 export interface Address {
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
+  street: string; // Dirección física (ej: "Av. 9 de julio 1925")
+  location?: string; // Opcional (ej: "-")
+  city: string; // Ciudad (ej: "CABA")
+  country: string; // País (ej: "Argentina")
+  cp: string; // Código postal (ej: "1072")
 }
 
 export interface RegisterData {
