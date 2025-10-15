@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 import { User } from '../interfaces/User';
 import { AuthResponse } from '../interfaces/AuthResponse';
 import { RegisterData } from '../interfaces/RegisterData';
-import { MockAuthService } from './mock-auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,25 +13,31 @@ export class AuthService {
   private readonly TOKEN_KEY = 'authToken';
   private readonly USER_KEY = 'currentUser';
   private readonly API_LOGIN_URL =
-    'https://api-auth-moby.herokuapp.com/api/user/login';
+    'http://api-auth.academy.mobydigital.com/api/user/login';
   private readonly API_REGISTER_URL =
-    'https://api-auth-moby.herokuapp.com/api/user';
+    'http://api-auth.academy.mobydigital.com/api/user/register';
   private http = inject(HttpClient);
-  private mockAuthService = inject(MockAuthService);
 
-  private readonly USE_MOCK = true;
   loginWithCredentials(
     mail: string,
     password: string
   ): Observable<AuthResponse> {
-    if (this.USE_MOCK) {
-      return this.mockAuthService.mockLogin(mail, password);
-    }
-
     const loginData = { mail, password };
+
     return this.http.post<any>(this.API_LOGIN_URL, loginData).pipe(
       map((response) => {
+        // Verificar que la respuesta contenga un token válido
+        if (!response.token && !response.accessToken && !response.jwt) {
+          throw new Error('Credenciales incorrectas');
+        }
+
+        // Verificar que exista información del usuario
+        if (!response.user) {
+          throw new Error('Usuario no encontrado');
+        }
+
         let address = undefined;
+
         if (response.user?.address) {
           address = {
             street: response.user.address.street || '',
@@ -59,12 +64,9 @@ export class AuthService {
   }
 
   registerUser(registerData: RegisterData): Observable<any> {
-    if (this.USE_MOCK) {
-      return this.mockAuthService.mockRegister(registerData);
-    }
-
     return this.http.post<any>(this.API_REGISTER_URL, registerData);
   }
+
   saveAuthData(authResponse: AuthResponse): void {
     localStorage.setItem(this.TOKEN_KEY, authResponse.token);
     localStorage.setItem(this.USER_KEY, JSON.stringify(authResponse.user));
