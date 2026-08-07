@@ -56,7 +56,7 @@ export class RegisterComponent {
       if (formData.address && formData.city && formData.state && formData.zip) {
         address = {
           street: formData.address,
-          location: '',
+          location: formData.city,
           city: formData.city,
           country: formData.state,
           cp: formData.zip,
