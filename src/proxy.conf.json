@@ -1,0 +1,11 @@
+{
+  "/api/auth": {
+    "target": "http://api-auth.academy.mobydigital.com",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/auth": "/api/user"
+    },
+    "logLevel": "debug"
+  }
+}

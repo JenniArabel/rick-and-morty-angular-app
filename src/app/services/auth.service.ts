@@ -12,10 +12,8 @@ import { RegisterData } from '../interfaces/RegisterData';
 export class AuthService {
   private readonly TOKEN_KEY = 'authToken';
   private readonly USER_KEY = 'currentUser';
-  private readonly API_LOGIN_URL =
-    'http://api-auth.academy.mobydigital.com/api/user/login';
-  private readonly API_REGISTER_URL =
-    'http://api-auth.academy.mobydigital.com/api/user/register';
+  private readonly API_LOGIN_URL = '/api/auth/login';
+  private readonly API_REGISTER_URL = '/api/auth/register';
   private http = inject(HttpClient);
 
   loginWithCredentials(
